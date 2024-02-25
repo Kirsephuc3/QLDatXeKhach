@@ -28,7 +28,6 @@ class UserSerializers(serializers.ModelSerializer):
         return user
 
 
-
 class RouteSerializers(serializers.ModelSerializer):
     class Meta:
         model = Route
@@ -75,6 +74,8 @@ class DriverSerializers(serializers.ModelSerializer):
 
 
 class TicketSerializers(serializers.ModelSerializer):
+    trip = TripSerializers()
+
     class Meta:
         model = Ticket
         fields = ['id', 'seat_number', 'trip']
