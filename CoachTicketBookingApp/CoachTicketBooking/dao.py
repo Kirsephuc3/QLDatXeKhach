@@ -26,3 +26,38 @@ def load_user(params={}):
         q = q.filter(active=active)
 
     return q
+
+
+def load_trip(params={}):
+    q = Trip.objects.all()
+
+    depart = params.get('depart')
+    if depart:
+        q = q.filter(route__depart=depart)
+
+    dest = params.get('dest')
+    if dest:
+        q = q.filter(route__dest=dest)
+
+    departure_date = params.get('departure_date')
+    if departure_date:
+        q = q.filter(departure_date=departure_date)
+
+    return q
+
+def load_seller(params={}):
+    q = TicketSeller.objects.all()
+
+    depart = params.get('depart')
+    if depart:
+        q = q.filter(route__depart=depart)
+
+    dest = params.get('dest')
+    if dest:
+        q = q.filter(route__dest=dest)
+
+    departure_date = params.get('departure_date')
+    if departure_date:
+        q = q.filter(departure_date=departure_date)
+
+    return q

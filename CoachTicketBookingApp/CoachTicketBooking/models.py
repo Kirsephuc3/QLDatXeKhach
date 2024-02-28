@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from cloudinary.models import CloudinaryField
 from ckeditor.fields import RichTextField
 from django.db import models
-from django import forms
-from django.contrib.postgres.fields import ArrayField
 
 
 # Create your models here.
@@ -42,10 +40,6 @@ class User(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=255, null=True, choices=Gender_choice)
     address = models.CharField(max_length=255, null=True)
-
-    # # để xác minh thân phận
-    # def has_role(self, required_role):
-    #     return self.role == required_role
 
 
 class Driver(BaseModel):
@@ -149,7 +143,7 @@ class Trip(BaseModel):
     pickup_location = models.CharField(max_length=100, null=True)  # Nơi đón
     dropoff_location = models.CharField(max_length=100, null=True)
     avatar = CloudinaryField('car', null=True)
-    price = models.ForeignKey(TicketPrice, on_delete=models.CASCADE, default=1)
+    price = models.ForeignKey(TicketPrice, on_delete=models.SET_NULL, default=1, null=True)
 
     @property
     def seat_numbers(self):
@@ -209,3 +203,14 @@ class Customer(BaseModel):
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} "
+
+
+class Feedback(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='feedbacks', null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    content = models.CharField(max_length=255, null=False)
+    rating = models.IntegerField(default=0)  # Đánh giá từ 0 đến 5
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.trip} {self.user.username}"

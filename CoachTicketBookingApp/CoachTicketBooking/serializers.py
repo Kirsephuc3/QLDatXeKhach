@@ -50,7 +50,7 @@ class TripSerializers(serializers.ModelSerializer):
     class Meta:
         model = Trip
         fields = ['id', 'route', 'departure_date', 'start_time', 'end_time', 'driver', 'pickup_location',
-                  'dropoff_location', 'price', 'image_url', 'seat_numbers_list']
+                  'dropoff_location', 'avatar', 'price', 'image_url', 'seat_numbers_list']
         # fields = '__all__'
 
     def get_image_url(self, obj):
@@ -94,3 +94,22 @@ class TicketsSellerSerializers(serializers.ModelSerializer):
     class Meta:
         model = TicketSeller
         fields = ['id', 'license_number', 'user', 'ticket']
+
+
+class AddTripSerializers(serializers.ModelSerializer):
+    price = TicketPriceSerializers()
+    image_url = serializers.SerializerMethodField()
+    seat_numbers_list = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Trip
+        fields = ['id', 'route', 'departure_date', 'start_time', 'end_time', 'driver', 'pickup_location',
+                  'dropoff_location', 'avatar', 'price', 'image_url', 'seat_numbers_list']
+
+    def create(self, validated_data):
+        price_data = validated_data.pop('price')
+        trip = Trip.objects.create(**validated_data)
+        TicketPrice.objects.create(trip=trip, **price_data)
+
+        return trip
+
