@@ -137,7 +137,8 @@ import cloudinary
 cloudinary.config(
     cloud_name="dpo7xz0kp",
     api_key="443839822669517",
-    api_secret="FYzAdm8HVbaOMxE-4scmRW3u22U"
+    api_secret="FYzAdm8HVbaOMxE-4scmRW3u22U",
+    api_proxy="http://proxy.server:3128"
 )
 
 REST_FRAMEWORK = {
