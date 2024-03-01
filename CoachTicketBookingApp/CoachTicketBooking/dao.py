@@ -1,5 +1,5 @@
-from .models import *
-from django.db.models import Q, Count
+from django.db.models import Q
+from .models import Trip, TicketSeller, User
 
 
 def load_user(params={}):
@@ -44,6 +44,7 @@ def load_trip(params={}):
         q = q.filter(departure_date=departure_date)
 
     return q
+
 
 def load_seller(params={}):
     q = TicketSeller.objects.all()
